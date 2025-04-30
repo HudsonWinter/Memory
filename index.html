@@ -5,24 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memory Game</title>
     <style>
+        /* Hide scrollbars but keep scrolling functionality */
+        html {
+            overflow: -moz-scrollbars-none;  /* Firefox */
+            -ms-overflow-style: none;  /* IE/Edge */
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #111827;
-            margin: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+        }
+        
+        .scroll-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;  /* Smooth scrolling on iOS */
+        }
+        
+        ::-webkit-scrollbar {
+            display: none;  /* Chrome/Safari/Edge */
+        }
+        
+        /* Game styling */
+        .game-wrapper {
+            min-width: 800px;
+            min-height: 600px;
             padding: 20px;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: #111827;
             color: white;
-        }
-        
-        .game-wrapper {
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 20px;
         }
         
         h1 {
@@ -140,6 +156,11 @@
         }
         
         @media (max-width: 600px) {
+            .game-wrapper {
+                min-width: 100vw;
+                min-height: 100vh;
+            }
+            
             .card {
                 width: 50px;
                 height: 50px;
@@ -160,44 +181,47 @@
     </style>
 </head>
 <body>
-    <div class="game-wrapper">
-        <h1>Memory Game</h1>
-        
-        <div class="mode-selector">
-            <button id="timed-btn" class="active">Timed Mode</button>
-            <button id="cpu-btn">VS CPU</button>
-        </div>
-        
-        <div class="controls">
-            <button id="easy-btn" class="active">Easy (4×4)</button>
-            <button id="hard-btn">Hard (6×6)</button>
-            <button id="restart-btn">Restart</button>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-box">
-                <div>Time: <span class="timer">0.00</span>s</div>
+    <div class="scroll-wrapper">
+        <div class="game-wrapper">
+            <h1>Memory Game</h1>
+            
+            <div class="mode-selector">
+                <button id="timed-btn" class="active">Timed Mode</button>
+                <button id="cpu-btn">VS CPU</button>
             </div>
-            <div class="stat-box">
-                <div>Moves: <span class="moves">0</span></div>
+            
+            <div class="controls">
+                <button id="easy-btn" class="active">Easy (4×4)</button>
+                <button id="hard-btn">Hard (6×6)</button>
+                <button id="restart-btn">Restart</button>
             </div>
-            <div class="stat-box best-time-stat">
-                <div>Best: <span class="best-time">-</span>s</div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div>Time: <span class="timer">0.00</span>s</div>
+                </div>
+                <div class="stat-box">
+                    <div>Moves: <span class="moves">0</span></div>
+                </div>
+                <div class="stat-box best-time-stat">
+                    <div>Best: <span class="best-time">-</span>s</div>
+                </div>
+                <div class="stat-box player-stat" style="display: none;">
+                    <div>You: <span class="player-score">0</span></div>
+                </div>
+                <div class="stat-box cpu-stat" style="display: none;">
+                    <div>CPU: <span class="cpu-score">0</span></div>
+                </div>
             </div>
-            <div class="stat-box player-stat" style="display: none;">
-                <div>You: <span class="player-score">0</span></div>
+            
+            <div class="game-container">
+                <div class="game-board size-4x4" id="game-board"></div>
             </div>
-            <div class="stat-box cpu-stat" style="display: none;">
-                <div>CPU: <span class="cpu-score">0</span></div>
-            </div>
-        </div>
-        
-        <div class="game-container">
-            <div class="game-board size-4x4" id="game-board"></div>
         </div>
     </div>
     
     <script>
+        // [JavaScript remains exactly the same as previous version]
         // Game variables
         let cards = [];
         let flippedCards = [];
