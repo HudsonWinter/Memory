@@ -10,40 +10,46 @@
             text-align: center;
             background-color: #111827;
             margin: 0;
-            padding: 10px;
-            overflow: hidden;
-            height: 100vh;
+            padding: 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             color: white;
         }
         
+        .game-wrapper {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
         h1 {
-            margin: 5px 0;
-            font-size: 1.5em;
+            margin: 10px 0;
+            font-size: 2em;
         }
         
         .controls {
-            margin: 5px 0;
+            margin: 15px 0;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 5px;
+            gap: 10px;
         }
         
         .mode-selector {
-            margin: 5px 0;
+            margin: 15px 0;
         }
         
         button {
-            padding: 5px 10px;
-            margin: 0 3px;
-            font-size: 0.8em;
+            padding: 8px 16px;
+            margin: 0 5px;
+            font-size: 1em;
             background-color: #374151;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -58,8 +64,11 @@
         }
         
         .game-container {
-            margin: 5px 0;
-            max-height: calc(100vh - 150px);
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #1F2937;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -67,22 +76,21 @@
         
         .game-board {
             display: grid;
-            gap: 5px;
+            gap: 10px;
+            padding: 15px;
             background-color: #1F2937;
-            padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .card {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             background-color: #1E3A8A;
             border-radius: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.2em;
+            font-size: 1.5em;
             cursor: pointer;
             transition: all 0.3s;
             transform-style: preserve-3d;
@@ -90,8 +98,8 @@
         }
         
         .game-board.size-4x4 .card {
-            width: 70px;
-            height: 70px;
+            width: 80px;
+            height: 80px;
         }
         
         .card.flipped {
@@ -110,59 +118,83 @@
         }
         
         .stats {
-            margin: 5px 0;
-            font-size: 0.9em;
+            margin: 15px 0;
+            font-size: 1.1em;
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
         
         .stat-box {
             background-color: #1F2937;
-            padding: 5px 10px;
-            border-radius: 3px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            min-width: 100px;
         }
         
         .timer, .moves, .player-score, .cpu-score, .best-time {
             font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        @media (max-width: 600px) {
+            .card {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2em;
+            }
+            
+            .game-board.size-4x4 .card {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Memory Game</h1>
-    
-    <div class="mode-selector">
-        <button id="timed-btn" class="active">Timed Mode</button>
-        <button id="cpu-btn">VS CPU</button>
-    </div>
-    
-    <div class="controls">
-        <button id="easy-btn" class="active">Easy (4×4)</button>
-        <button id="hard-btn">Hard (6×6)</button>
-        <button id="restart-btn">Restart</button>
-    </div>
-    
-    <div class="stats">
-        <div class="stat-box">
-            <div>Time: <span class="timer">0.00</span>s</div>
+    <div class="game-wrapper">
+        <h1>Memory Game</h1>
+        
+        <div class="mode-selector">
+            <button id="timed-btn" class="active">Timed Mode</button>
+            <button id="cpu-btn">VS CPU</button>
         </div>
-        <div class="stat-box">
-            <div>Moves: <span class="moves">0</span></div>
+        
+        <div class="controls">
+            <button id="easy-btn" class="active">Easy (4×4)</button>
+            <button id="hard-btn">Hard (6×6)</button>
+            <button id="restart-btn">Restart</button>
         </div>
-        <div class="stat-box best-time-stat">
-            <div>Best: <span class="best-time">-</span>s</div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div>Time: <span class="timer">0.00</span>s</div>
+            </div>
+            <div class="stat-box">
+                <div>Moves: <span class="moves">0</span></div>
+            </div>
+            <div class="stat-box best-time-stat">
+                <div>Best: <span class="best-time">-</span>s</div>
+            </div>
+            <div class="stat-box player-stat" style="display: none;">
+                <div>You: <span class="player-score">0</span></div>
+            </div>
+            <div class="stat-box cpu-stat" style="display: none;">
+                <div>CPU: <span class="cpu-score">0</span></div>
+            </div>
         </div>
-        <div class="stat-box player-stat" style="display: none;">
-            <div>You: <span class="player-score">0</span></div>
+        
+        <div class="game-container">
+            <div class="game-board size-4x4" id="game-board"></div>
         </div>
-        <div class="stat-box cpu-stat" style="display: none;">
-            <div>CPU: <span class="cpu-score">0</span></div>
-        </div>
-    </div>
-    
-    <div class="game-container">
-        <div class="game-board size-4x4" id="game-board"></div>
     </div>
     
     <script>
