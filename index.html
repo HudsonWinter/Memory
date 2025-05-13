@@ -6,99 +6,82 @@
     <title>Memory Game</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Montserrat:wght@600&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
-        /* Hide scrollbars but keep scrolling functionality */
-        html {
-            overflow: -moz-scrollbars-none;
-            -ms-overflow-style: none;
-        }
-        
         body {
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-            position: fixed;
+            margin: 0;
+            padding: 0;
             font-family: 'Montserrat', sans-serif;
-        }
-        
-        .scroll-wrapper {
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        ::-webkit-scrollbar {
-            display: none;
-        }
-        
-        /* Game styling with fancy fonts */
-        .game-wrapper {
-            min-width: 800px;
-            min-height: 600px;
-            padding: 20px;
+            background-color: #111827;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #111827;
-            color: white;
+        }
+        
+        .game-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         h1 {
-            margin: 10px 0;
-            font-size: 2.5em;
+            margin: 5px 0;
+            font-size: 1.8em;
             font-family: 'Fredoka One', cursive;
             color: #F59E0B;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            letter-spacing: 1px;
-        }
-        
-        .controls {
-            margin: 15px 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            text-align: center;
+            width: 100%;
         }
         
         .mode-selector {
-            margin: 15px 0;
+            margin: 8px 0;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .controls {
+            margin: 8px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
         }
         
         button {
-            padding: 10px 20px;
-            margin: 0 5px;
-            font-size: 1.1em;
+            padding: 6px 12px;
+            margin: 0 3px;
+            font-size: 0.9em;
             background-color: #374151;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            letter-spacing: 0.5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         button:hover {
             background-color: #4B5563;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
         }
         
         button.active {
             background-color: #60A5FA !important;
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 4px 10px rgba(96, 165, 250, 0.4);
+            transform: scale(1.03);
         }
         
-        /* Game board styling */
         .game-container {
-            margin: 20px 0;
-            padding: 20px;
+            margin: 10px 0;
+            padding: 10px;
             background-color: #1F2937;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -106,31 +89,30 @@
         
         .game-board {
             display: grid;
-            gap: 12px;
-            padding: 15px;
+            gap: 8px;
+            padding: 10px;
             background-color: #1F2937;
-            border-radius: 10px;
+            border-radius: 8px;
         }
         
         .card {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             background-color: #1E3A8A;
-            border-radius: 8px;
+            border-radius: 6px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.8em;
+            font-size: 1.5em;
             cursor: pointer;
             transition: all 0.3s;
-            transform-style: preserve-3d;
             color: white;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
         .game-board.size-4x4 .card {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
         }
         
         .card.flipped {
@@ -148,111 +130,99 @@
             cursor: default;
         }
         
-        /* Stats styling */
         .stats {
-            margin: 20px 0;
-            font-size: 1.1em;
+            margin: 10px 0;
+            font-size: 0.9em;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            font-family: 'Montserrat', sans-serif;
+            gap: 10px;
+            width: 100%;
         }
         
         .stat-box {
             background-color: #1F2937;
-            padding: 12px 18px;
-            border-radius: 8px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-            min-width: 110px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            min-width: 80px;
             text-align: center;
         }
         
         .timer, .moves, .player-score, .cpu-score, .best-time {
             font-weight: 600;
-            font-size: 1.3em;
+            font-size: 1.1em;
             color: #F59E0B;
         }
         
-        /* Responsive design */
         @media (max-width: 600px) {
-            .game-wrapper {
-                min-width: 100vw;
-                min-height: 100vh;
-                padding: 15px;
-            }
-            
             h1 {
-                font-size: 2em;
-            }
-            
-            button {
-                padding: 8px 16px;
-                font-size: 1em;
-            }
-            
-            .card {
-                width: 50px;
-                height: 50px;
                 font-size: 1.5em;
             }
             
+            button {
+                padding: 5px 10px;
+                font-size: 0.8em;
+            }
+            
+            .card {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            
             .game-board.size-4x4 .card {
-                width: 70px;
-                height: 70px;
+                width: 50px;
+                height: 50px;
             }
             
             .stats {
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-                font-size: 1em;
+                gap: 8px;
+                font-size: 0.8em;
             }
             
             .stat-box {
-                padding: 10px 15px;
-                min-width: 90px;
+                padding: 6px 10px;
+                min-width: 70px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="scroll-wrapper">
-        <div class="game-wrapper">
-            <h1>Memory Game</h1>
-            
-            <div class="mode-selector">
-                <button id="timed-btn" class="active">Timed Mode</button>
-                <button id="cpu-btn">VS CPU</button>
+    <div class="game-wrapper">
+        <h1>Memory Game</h1>
+        
+        <div class="mode-selector">
+            <button id="timed-btn" class="active">Timed Mode</button>
+            <button id="cpu-btn">VS CPU</button>
+        </div>
+        
+        <div class="controls">
+            <button id="easy-btn" class="active">Easy (4×4)</button>
+            <button id="hard-btn">Hard (6×6)</button>
+            <button id="restart-btn">Restart</button>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div>Time: <span class="timer">0.00</span>s</div>
             </div>
-            
-            <div class="controls">
-                <button id="easy-btn" class="active">Easy (4×4)</button>
-                <button id="hard-btn">Hard (6×6)</button>
-                <button id="restart-btn">Restart</button>
+            <div class="stat-box">
+                <div>Moves: <span class="moves">0</span></div>
             </div>
-            
-            <div class="stats">
-                <div class="stat-box">
-                    <div>Time: <span class="timer">0.00</span>s</div>
-                </div>
-                <div class="stat-box">
-                    <div>Moves: <span class="moves">0</span></div>
-                </div>
-                <div class="stat-box best-time-stat">
-                    <div>Best: <span class="best-time">-</span>s</div>
-                </div>
-                <div class="stat-box player-stat" style="display: none;">
-                    <div>You: <span class="player-score">0</span></div>
-                </div>
-                <div class="stat-box cpu-stat" style="display: none;">
-                    <div>CPU: <span class="cpu-score">0</span></div>
-                </div>
+            <div class="stat-box best-time-stat">
+                <div>Best: <span class="best-time">-</span>s</div>
             </div>
-            
-            <div class="game-container">
-                <div class="game-board size-4x4" id="game-board"></div>
+            <div class="stat-box player-stat" style="display: none;">
+                <div>You: <span class="player-score">0</span></div>
             </div>
+            <div class="stat-box cpu-stat" style="display: none;">
+                <div>CPU: <span class="cpu-score">0</span></div>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <div class="game-board size-4x4" id="game-board"></div>
         </div>
     </div>
     
